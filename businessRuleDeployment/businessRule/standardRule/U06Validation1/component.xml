@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<component>
+  <tpComponent>STANDARD_RULE</tpComponent>
+  <cdComponent>U06Validation</cdComponent>
+  <dsComponent><![CDATA[Regla de validación para el formulario U06]]></dsComponent>
+  <cdVersion>1</cdVersion>
+  <cdState>DEPLOYED</cdState>
+  <dsClassNamePosfix>2580571932290653</dsClassNamePosfix>
+  <validated>true</validated>
+  <hasVersionInUse>true</hasVersionInUse>
+  <cdUsuarioActual>CONSIST</cdUsuarioActual>
+  <cdUsuarioAlta>CONSIST</cdUsuarioAlta>
+  <dtActual>2017-01-05 12:16:13.77</dtActual>
+  <dtAlta>2017-01-05 12:16:13.77</dtAlta>
+  <idUseContext>false</idUseContext>
+  <cdDataSource>GPA RULES BASIC</cdDataSource>
+  <dsClassLibrary1>com.consist.businessRule.common.RuleLibrarySystem</dsClassLibrary1>
+  <dsBasePackage>businessRule</dsBasePackage>
+  <dsClassNamePosfix>2580571932290653</dsClassNamePosfix>
+  <cdLibraryMode1>INSTANCE_WITH_CONNECTION</cdLibraryMode1>
+  <qtImport>0</qtImport>
+  <dsBaseDir>/apps/test/webapps/aetest/businessRuleDeployment/</dsBaseDir>
+  <isBackup>false</isBackup>
+  <idLibrary1>SystemLib</idLibrary1>
+  <idImportedDataSource>true</idImportedDataSource>
+  <qtClassLibrary>1</qtClassLibrary>
+  <default />
+  <lsCall />
+  <lsINParameter>
+    <parameter>
+      <cdParameter>pBODocument</cdParameter>
+      <tpParameterMode>IN</tpParameterMode>
+      <tpParameter>xmlGenerator.server.BO.BOGenericDocument</tpParameter>
+      <isReturn>false</isReturn>
+      <cdMultiple>false</cdMultiple>
+    </parameter>
+  </lsINParameter>
+  <lsOUTParameter>
+    <parameter>
+      <cdParameter>pResult</cdParameter>
+      <tpParameterMode>OUT</tpParameterMode>
+      <tpParameter>java.lang.String</tpParameter>
+      <isReturn>false</isReturn>
+      <cdMultiple>false</cdMultiple>
+    </parameter>
+  </lsOUTParameter>
+  <class>
+    <tpExecution>MAIN</tpExecution>
+    <lsImport>
+      <import>boolean</import>
+      <import>businessRule.standardRule.U06Validation1.U06Validation_1_2580571932290653_abstract</import>
+      <import>com.consist.businessRule.common.RuleLibrarySystem</import>
+      <import>com.consist.commonFunctions.expression.Expression</import>
+      <import>com.consist.commonFunctions.expression.FieldValue</import>
+      <import>com.consist.commonFunctions.expression.Operation</import>
+      <import>com.consist.commonFunctions.expression.Value</import>
+      <import>com.consist.commonFunctions.expression.exeption.ExpressionException</import>
+      <import>com.consist.component.common.ExecutionContext</import>
+      <import>com.consist.exceptions.BusinessTaskException</import>
+      <import>com.consist.workflow.condition.parser.ModelerSetValueFormExpression</import>
+      <import>com.consist.workflow.server.BO.BOCondition</import>
+      <import>com.consist.workflow.server.BO.BOExpressionCondition</import>
+      <import>int</import>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>java.lang.Throwable</import>
+      <import>java.sql.Date</import>
+      <import>java.sql.Time</import>
+      <import>java.sql.Timestamp</import>
+      <import>java.util.Iterator</import>
+      <import>java.util.List</import>
+      <import>java.util.Map</import>
+      <import>long</import>
+      <import>modeler.util.RuleManager</import>
+      <import>xmlGenerator.validation.BODigitalDocument</import>
+      <import>xmlGenerator.validation.BTDigitalDocument</import>
+    </lsImport>
+    <dsTestingCode />
+    <dsRunCode><![CDATA[BTDigitalDocument btDigDoc = new BTDigitalDocument(getPoolIdentifier());
+BODigitalDocument boDigDoc = new BODigitalDocument(pBODocument);
+pResult = "";
+
+validateFieldsForm(btDigDoc,boDigDoc);
+pResult = pResult.equals("") ? null : pResult;]]></dsRunCode>
+    <dsAdditionalCode><![CDATA[private void validateFieldsForm(BTDigitalDocument btDigDoc, BODigitalDocument boDigDoc) throws Exception {
+
+ if (conditionIsTrue("|ANNEX(U06)|.fieldfqndr = VALUE('QQ') ", boDigDoc)) {
+        pResult += " QQ \n ";
+}
+
+ if (conditionIsTrue("|ANNEX(U06)|.fieldfqndr = VALUE('QQ') ", boDigDoc)) {
+        pResult += " QQ \n ";
+}
+
+ if (conditionIsTrue("|ANNEX(U06)|.fieldfqndr = VALUE('QQ') ", boDigDoc)) {
+        pResult += " QQ \n ";
+}
+
+ if (conditionIsTrue("|ANNEX(U06)|.fieldfqndr = VALUE('QQ') ", boDigDoc)) {
+        pResult += " QQ \n ";
+}
+}
+ 
+ private void setFieldValue(String pConditionParserDO, BODigitalDocument boDigDoc) throws Exception {
+        BOCondition xBOCondition = RuleManager.getInstance().evaluateDsConditionExpression(pConditionParserDO, getPoolIdentifier());
+        Expression expression = ((BOExpressionCondition) xBOCondition).getExpression();
+        ModelerSetValueFormExpression xModelerSetValueFormExpression = (ModelerSetValueFormExpression) expression;
+        Operation xOper = (Operation) xModelerSetValueFormExpression.getpExpressionReal();
+        //Obtenemos fieldValue
+        FieldValue xFieldValue = (FieldValue) xOper.getLsExpressions().get(0);
+        xFieldValue.setObject(boDigDoc.getDocument());
+        xOper.getLsExpressions().set(0, xFieldValue);
+        Value xConditionResult = xOper.getValue();
+    }
+
+private boolean conditionIsTrue(String pCondition, BODigitalDocument boDigDoc) throws Exception {
+        BOCondition xBOCondition = RuleManager.getInstance().evaluateDsConditionExpression(pCondition, getPoolIdentifier());
+        try {
+            Expression expression = ((BOExpressionCondition) xBOCondition).getExpression();
+            expression = processExpression(expression, boDigDoc);
+            Value xConditionResult = expression.getValue();
+            if (xConditionResult.isBoolean()) {
+                return (((Boolean) xConditionResult.getRealValue()).booleanValue());
+            }            
+        } catch (ExpressionException e) {
+            log(""+e.getMessage());                        
+        }
+        return false;
+    }
+
+ private Expression processExpression(Expression pExpression, BODigitalDocument boDigDoc) {
+        if (pExpression instanceof Operation) {            
+            Operation xTemp = (Operation) pExpression;
+            for (int i = 0; i < xTemp.getLsExpressions().size(); i++) {
+                Expression xExpressionTemp = (Expression) xTemp.getLsExpressions().get(i);                
+                if (xExpressionTemp instanceof Operation) {                    
+                    xTemp.getLsExpressions().set(i, processExpression(xExpressionTemp, boDigDoc));
+                } else if (xExpressionTemp instanceof FieldValue) {                    
+                    FieldValue xFieldValue = (FieldValue) xExpressionTemp;
+                    xFieldValue.setObject(boDigDoc.getDocument());                    
+                    xTemp.getLsExpressions().set(i, xFieldValue);
+                }
+            }
+            return xTemp;
+        } else if (pExpression instanceof FieldValue) {            
+            FieldValue xFieldValue = (FieldValue) pExpression;
+            xFieldValue.setObject(boDigDoc.getDocument());            
+            return xFieldValue;
+        }
+        return pExpression;
+    }]]></dsAdditionalCode>
+  </class>
+</component>
+
